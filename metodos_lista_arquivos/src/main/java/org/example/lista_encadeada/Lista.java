@@ -37,6 +37,18 @@ public class Lista {
         System.out.println();
     }
 
+    public void exibir(String str) {
+        No atual = inicio;
+        System.out.print("Lista ");
+        System.out.print(str);
+        System.out.print(": ");
+        while (atual != null) {
+            System.out.print(atual.getInfo() + " ");
+            atual = atual.getProx();
+        }
+        System.out.println();
+    }
+
     public void exibirOrdemReversa() {
         No atual = fim;
         System.out.print("Lista (reverso): ");
@@ -55,7 +67,7 @@ public class Lista {
     }
 
     public void aleatorizar() {
-        if(inicio != null && inicio != fim) {
+        if (inicio != null && inicio != fim) {
             Random random = new Random();
             for (int i = qte_el - 1; i > 0; i--) {
                 int j = random.nextInt(i + 1);
@@ -76,21 +88,101 @@ public class Lista {
         return atual;
     }
 
-    public void ordenarPorInsercaoDireta() {}
-    public void ordenarPorInsercaoBinaria() {}
-    public void ordenarPorSelecaoDireta() {}
-    public void ordenarPorBolha() {}
-    public void ordenarPorShake() {}
-    public void ordenarPorShell() {}
-    public void ordenarPorHeap() {}
-    public void ordenarPorQuickComPivo() {}
-    public void ordenarPorQuickSemPivo() {}
-    public void ordenarPorFusaoDireta1() {} // Implementação 1 (Merge)
-    public void ordenarPorFusaoDireta2() {} // Implementação 2 (Merge)
-    public void ordenarPorCounting() {}
-    public void ordenarPorBucket() {}
-    public void ordenarPorRadix() {}
-    public void ordenarPorComb() {}
-    public void ordenarPorGnome() {}
-    public void ordenarPorTim() {}
+    // GUSTAVO
+
+    public void ordenarPorHeap() {
+    }
+
+    public void ordenarPorQuickComPivo() {
+    }
+
+    public void ordenarPorQuickSemPivo() {
+    }
+
+    public void ordenarPorFusaoDiretaMerge1() {
+    }
+
+    public void ordenarPorFusaoDiretaMerge2() {
+    }
+
+    public void ordenarPorSelecaoDireta() {
+        if (inicio != null && inicio != fim) {
+            int menor;
+            No pi = inicio, pj, pMenor;
+            // ir até o penúltimo elemento
+            while (pi.getProx() != null) {
+                menor = pi.getInfo();
+                pMenor = pi;
+                // ir do proximo do atual até o último
+                pj = pi.getProx();
+                while (pj != null) {
+                    if (pj.getInfo() < menor) {
+                        menor = pj.getInfo();
+                        pMenor = pj;
+                    }
+                    pj = pj.getProx();
+                }
+                pMenor.setInfo(pi.getInfo());
+                pi.setInfo(menor);
+                pi = pi.getProx();
+            }
+        }
+    }
+
+    public void ordenarPorGnome() {
+        /**
+         * procedure gnomeSort(a[]):
+         * ----pos := 1
+         * ----while pos < length(a):
+         * --------if (pos == 0 or a[pos] >= a[pos-1]):
+         * ------------pos := pos + 1
+         * --------else:
+         * ------------swap a[pos] and a[pos-1]
+         * ------------pos := pos - 1
+         */
+        int aux;
+        No atual = inicio;
+        while (atual != null) {
+            if (atual == inicio || atual.getInfo() >= atual.getAnt().getInfo()) {
+                atual = atual.getProx();
+            } else {
+                // troca
+                aux = atual.getInfo();
+                atual.setInfo(atual.getAnt().getInfo());
+                atual.getAnt().setInfo(aux);
+                atual = atual.getAnt();
+            }
+        }
+    }
+
+    public void ordenarPorCounting() {
+    }
+
+    // FERNANDO
+    public void ordenarPorInsercaoDireta() {
+    }
+
+    public void ordenarPorInsercaoBinaria() {
+    }
+
+    public void ordenarPorBolha() {
+    }
+
+    public void ordenarPorShake() {
+    }
+
+    public void ordenarPorShell() {
+    }
+
+    public void ordenarPorBucket() {
+    }
+
+    public void ordenarPorRadix() {
+    }
+
+    public void ordenarPorComb() {
+    }
+
+    public void ordenarPorTim() {
+    }
 }
