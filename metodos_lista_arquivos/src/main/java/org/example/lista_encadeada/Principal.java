@@ -7,7 +7,7 @@ public class Principal {
 
     public static void gustavo() {
         Lista lista = new Lista();
-        lista.popular(30);
+        lista.popular(5);
         lista.exibir("(Aleatório)");
 
         // lista.ordenarPorSelecaoDireta();
@@ -15,6 +15,8 @@ public class Principal {
 
         // lista.ordenarPorGnome();
         // lista.exibir("(Ordenado por gnome)");
+
+        lista.ordenarPorCounting();
     }
 
     public static void fernando() {

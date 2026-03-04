@@ -13,6 +13,14 @@ public class Lista {
         this.qte_el = 0;
     }
 
+    public No getInicio() {
+        return inicio;
+    }
+
+    public No getFim() {
+        return fim;
+    }
+
     public void inserirNoFim(int valor) {
         No novoNo = new No(valor);
 
@@ -156,6 +164,38 @@ public class Lista {
     }
 
     public void ordenarPorCounting() {
+        // achar maior elemento
+        int maior = inicio.getInfo();
+        No atual = inicio, aux;
+        while (atual != null) {
+            if (atual.getInfo() > maior) {
+                maior = atual.getInfo();
+            }
+            atual = atual.getProx();
+        }
+        Lista novaLista = new Lista();
+        for (int i = 0; i <= maior; i++) {
+            novaLista.inserirNoFim(0);
+        }
+        atual = inicio;
+        while (atual != null) {
+            aux = novaLista.getInicio();
+            for (int i = 0; i < atual.getInfo(); i++) {
+                aux = aux.getProx();
+            }
+            aux.setInfo(aux.getInfo() + 1);
+            atual = atual.getProx();
+        }
+        aux = novaLista.getInicio();
+        int numAtual = 0;
+        atual = inicio;
+        while (aux != null) {
+            if (aux.getInfo() > 0) {
+                // ...
+            }
+            numAtual++;
+            aux = aux.getProx();
+        }
     }
 
     // FERNANDO
