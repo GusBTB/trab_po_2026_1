@@ -8,14 +8,14 @@ public class Principal {
     Arquivo arq_ord, arq_rev, arq_rand, aux_rev, aux_rand;
 
     public Principal() {
-        arq_ord = new Arquivo(10);
-        arq_rev = new Arquivo(10);
-        arq_rand = new Arquivo(10);
-        aux_rev = new Arquivo(10);
-        aux_rand = new Arquivo(10);
+        arq_ord = new Arquivo(6);
+        arq_rev = new Arquivo(6);
+        arq_rand = new Arquivo(6);
+        aux_rev = new Arquivo(6);
+        aux_rand = new Arquivo(6);
     }
 
-    public void geraTabela() {
+    public void geraTabela(boolean mostrarLog) {
         arq_ord.geraArquivoOrdenado();
         arq_rev.geraArquivoReverso();
         arq_rand.geraArquivoRandomico();
@@ -35,7 +35,8 @@ public class Principal {
                     "|-----------------------|---------------|---------------|--------------|--------------|-----------------|---------------|---------------|--------------|--------------|------------------|---------------|---------------|--------------|--------------|-----------------|\n");
 
             // Inserção Direta
-            System.out.println("1");
+            if (mostrarLog)
+                System.out.println("1: Inserção direta");
             StringBuilder linhaAtual = new StringBuilder("| Inserção Direta       | ");
             arq_ord.initComp();
             arq_ord.initMov();
@@ -44,26 +45,36 @@ public class Principal {
             long tempoFinal = System.currentTimeMillis();
             concatenarOrdenado(linhaAtual, (tempoFinal - tempoInicial) / 1000, arq_ord, arq_ord.filesize() - 1,
                     3 * (arq_ord.filesize() - 1));
+            if (mostrarLog)
+                arq_ord.exibir("(Arquivo ordenado)");
 
             aux_rev.initComp();
             aux_rev.initMov();
             aux_rev.copiaArquivo(arq_rev.getArquivo());
+            if (mostrarLog)
+                aux_rev.exibir("(Arquivo reverso não ordenado)");
             tempoInicial = System.currentTimeMillis();
             aux_rev.insercaoDireta();
             tempoFinal = System.currentTimeMillis();
             concatenarReverso(linhaAtual, (tempoFinal - tempoInicial) / 1000, aux_rev,
                     (int) (Math.pow(arq_ord.filesize(), 2) + arq_ord.filesize() - 2) / 4,
                     (int) (Math.pow(arq_ord.filesize(), 2) + arq_ord.filesize() * 9 - 10) / 4);
+            if (mostrarLog)
+                aux_rev.exibir("(Arquivo reverso ordenado)");
 
             aux_rand.initComp();
             aux_rand.initMov();
             aux_rand.copiaArquivo(arq_rand.getArquivo());
+            if (mostrarLog)
+                aux_rand.exibir("(Arquivo random não ordenado)");
             tempoInicial = System.currentTimeMillis();
             aux_rand.insercaoDireta();
             tempoFinal = System.currentTimeMillis();
             concatenarRandomico(linhaAtual, (tempoFinal - tempoInicial) / 1000, aux_rand,
                     (int) (Math.pow(arq_ord.filesize(), 2) + arq_ord.filesize() - 4) / 4,
                     (int) (Math.pow(arq_ord.filesize(), 2) + arq_ord.filesize() * 3 - 4) / 4);
+            if (mostrarLog)
+                aux_rand.exibir("(Arquivo random ordenado)");
 
             writer.write(linhaAtual.toString());
             quebraLinha(writer);
@@ -147,6 +158,6 @@ public class Principal {
 
     public static void main(String[] args) {
         Principal p = new Principal();
-        p.geraTabela();
+        p.geraTabela(true);
     }
 }

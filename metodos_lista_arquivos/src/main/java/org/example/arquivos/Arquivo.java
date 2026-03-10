@@ -79,6 +79,8 @@ public class Arquivo {
         return mov;
     }
 
+    // GUSTAVO
+
     public void insercaoDireta() {
         int i = 1, pos, tl = filesize();
         Registro reg = new Registro();
@@ -107,6 +109,30 @@ public class Arquivo {
             seekArq(++i);
             reg.leDoArq(arquivo);
         }
+    }
+
+    public void insercaoBinaria() {
+    }
+
+    public void bolha() {
+    }
+
+    public void shake() {
+    }
+
+    public void shell() {
+    }
+
+    public void bucket() {
+    }
+
+    public void radix() {
+    }
+
+    public void comb() {
+    }
+
+    public void tim() {
     }
 
     public void inserirRegNoFinal(Registro reg) {
@@ -166,5 +192,15 @@ public class Arquivo {
             truncate(0);
         for (int i = tamanho; i > 0; i--)
             inserirRegNoFinal(new Registro(i));
+    }
+
+    public void exibir(String flag) {
+        System.out.println("\n" + flag);
+        Registro aux = new Registro();
+        seekArq(0);
+        while (!eof()) {
+            aux.leDoArq(arquivo);
+            System.out.print(aux.getNumero() + " ");
+        }
     }
 }
