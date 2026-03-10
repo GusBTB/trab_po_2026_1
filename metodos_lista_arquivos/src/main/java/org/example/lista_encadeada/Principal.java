@@ -19,8 +19,11 @@ public class Principal {
         // lista.ordenarPorCounting();
         // lista.exibir("(Ordenado por counting)");
 
-        lista.ordenarPorFusaoDiretaMerge1();
-        lista.exibir("(Ordenado por Fusao direta Merge 1)");
+        // lista.ordenarPorFusaoDiretaMerge1();
+        // lista.exibir("(Ordenado por Fusao direta Merge 1)");
+
+        lista.ordenarPorHeap();
+        lista.exibir("(Ordenado por Heap)");
     }
 
     public static void fernando() {

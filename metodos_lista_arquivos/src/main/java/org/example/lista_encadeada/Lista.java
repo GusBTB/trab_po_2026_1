@@ -99,6 +99,38 @@ public class Lista {
     // GUSTAVO
 
     public void ordenarPorHeap() {
+        int aux1, TL2 = qte_el, pai, F1, F2, maiorF;
+        int[] onde_estou_na_lista = { 0 };
+        No ultimo_no = fim, auxFilho, auxPai;
+        No[] onde_estou_no = { inicio };
+        while (ultimo_no != inicio) {
+            for (pai = TL2 / 2 - 1; pai >= 0; pai--) {
+                F1 = 2 * pai + 1;
+                F2 = F1 + 1;
+                // recuperar maior filho
+                maiorF = F1;
+                if (F2 < TL2 && recuperarNaPos(F2, this, onde_estou_na_lista, onde_estou_no)
+                        .getInfo() > recuperarNaPos(F1, this, onde_estou_na_lista, onde_estou_no).getInfo()) {
+                    maiorF = F2;
+                }
+                // se filho maior é maior que pai, trocar
+                auxFilho = recuperarNaPos(maiorF, this, onde_estou_na_lista, onde_estou_no);
+                auxPai = recuperarNaPos(pai, this, onde_estou_na_lista, onde_estou_no);
+                if (auxFilho.getInfo() > auxPai.getInfo()) {
+                    maiorF = auxFilho.getInfo();
+                    auxFilho.setInfo(auxPai.getInfo());
+                    auxPai.setInfo(maiorF);
+                }
+            }
+            // trocar primeiro com ultimo no
+            aux1 = ultimo_no.getInfo();
+            ultimo_no.setInfo(inicio.getInfo());
+            ;
+            inicio.setInfo(aux1);
+            // decrementar TL2 => mover ponteiro
+            ultimo_no = ultimo_no.getAnt();
+            TL2--;
+        }
     }
 
     public void ordenarPorQuickComPivo() {
@@ -127,10 +159,28 @@ public class Lista {
         return aux;
     }
 
+    public No recuperarNaPos(int pos, Lista lista, int[] onde_estou_pos, No[] onde_estou_no) {
+        int n = onde_estou_pos[0] - pos, i = 0;
+        if (n > 0) {
+            // andar pra trás
+            for (i = 0; i < n; i++) {
+                onde_estou_no[0] = onde_estou_no[0].getAnt();
+                onde_estou_pos[0]--;
+            }
+        } else {
+            // andar pra frente
+            n *= -1;
+            for (i = 0; i < n; i++) {
+                onde_estou_no[0] = onde_estou_no[0].getProx();
+                onde_estou_pos[0]++;
+            }
+        }
+        return onde_estou_no[0];
+    }
+
     public void topDownMerge(Lista listaA, Lista listaB, int ini, int meio, int fim) {
         int i = ini, j = meio, k;
         No auxi, auxj, auxk;
-        ;
         for (k = ini; k < fim; k++) {
             auxi = recuperarNaPos(i, listaA);
             auxj = recuperarNaPos(j, listaA);
