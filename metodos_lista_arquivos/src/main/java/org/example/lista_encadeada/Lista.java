@@ -99,6 +99,38 @@ public class Lista {
     // GUSTAVO
 
     public void ordenarPorHeap() {
+        int aux1, TL2 = qte_el, pai, F1, F2, maiorF;
+        int[] onde_estou_na_lista = { 0 };
+        No ultimo_no = fim, auxFilho, auxPai;
+        No[] onde_estou_no = { inicio };
+        while (ultimo_no != inicio) {
+            for (pai = TL2 / 2 - 1; pai >= 0; pai--) {
+                F1 = 2 * pai + 1;
+                F2 = F1 + 1;
+                // recuperar maior filho
+                maiorF = F1;
+                if (F2 < TL2 && recuperarNaPos(F2, this, onde_estou_na_lista, onde_estou_no)
+                        .getInfo() > recuperarNaPos(F1, this, onde_estou_na_lista, onde_estou_no).getInfo()) {
+                    maiorF = F2;
+                }
+                // se filho maior é maior que pai, trocar
+                auxFilho = recuperarNaPos(maiorF, this, onde_estou_na_lista, onde_estou_no);
+                auxPai = recuperarNaPos(pai, this, onde_estou_na_lista, onde_estou_no);
+                if (auxFilho.getInfo() > auxPai.getInfo()) {
+                    maiorF = auxFilho.getInfo();
+                    auxFilho.setInfo(auxPai.getInfo());
+                    auxPai.setInfo(maiorF);
+                }
+            }
+            // trocar primeiro com ultimo no
+            aux1 = ultimo_no.getInfo();
+            ultimo_no.setInfo(inicio.getInfo());
+            ;
+            inicio.setInfo(aux1);
+            // decrementar TL2 => mover ponteiro
+            ultimo_no = ultimo_no.getAnt();
+            TL2--;
+        }
     }
 
     public void ordenarPorQuickComPivo() {
@@ -107,9 +139,91 @@ public class Lista {
     public void ordenarPorQuickSemPivo() {
     }
 
-    public void ordenarPorFusaoDiretaMerge1() {
+    public No recuperarNaPos(int pos) {
+        No aux = inicio;
+        int i = 0;
+        while (aux != null && i != pos) {
+            aux = aux.getProx();
+            i++;
+        }
+        return aux;
     }
 
+    public No recuperarNaPos(int pos, Lista lista) {
+        No aux = lista.getInicio();
+        int i = 0;
+        while (aux != null && i != pos) {
+            aux = aux.getProx();
+            i++;
+        }
+        return aux;
+    }
+
+    public No recuperarNaPos(int pos, Lista lista, int[] onde_estou_pos, No[] onde_estou_no) {
+        int n = onde_estou_pos[0] - pos, i = 0;
+        if (n > 0) {
+            // andar pra trás
+            for (i = 0; i < n; i++) {
+                onde_estou_no[0] = onde_estou_no[0].getAnt();
+                onde_estou_pos[0]--;
+            }
+        } else {
+            // andar pra frente
+            n *= -1;
+            for (i = 0; i < n; i++) {
+                onde_estou_no[0] = onde_estou_no[0].getProx();
+                onde_estou_pos[0]++;
+            }
+        }
+        return onde_estou_no[0];
+    }
+
+    public void topDownMerge(Lista listaA, Lista listaB, int ini, int meio, int fim) {
+        int i = ini, j = meio, k;
+        No auxi, auxj, auxk;
+        for (k = ini; k < fim; k++) {
+            auxi = recuperarNaPos(i, listaA);
+            auxj = recuperarNaPos(j, listaA);
+            auxk = recuperarNaPos(k, listaB);
+            if (i < meio && (j >= fim || auxi.getInfo() <= auxj.getInfo())) {
+                auxk.setInfo(auxi.getInfo());
+                i++;
+            } else {
+                auxk.setInfo(auxj.getInfo());
+                j++;
+            }
+        }
+
+    }
+
+    public void topDownSplitMerge(Lista listaA, Lista listaB, int ini, int fim) {
+        if (fim - ini > 1) {
+            int meio = (ini + fim) / 2;
+            System.out.println("Chegou no TDSM com inicio " + ini + " fim " + fim + " e meio " + meio);
+            topDownSplitMerge(listaB, listaA, ini, meio);
+            topDownSplitMerge(listaB, listaA, meio, fim);
+            topDownMerge(listaB, listaA, ini, meio, fim);
+        }
+    }
+
+    // top down
+    public void ordenarPorFusaoDiretaMerge1() {
+        No aux = inicio;
+        Lista lista_aux = new Lista();
+        // copia
+        while (aux != null) {
+            lista_aux.inserirNoFim(aux.getInfo());
+            aux = aux.getProx();
+        }
+        lista_aux.exibir("(Lisa aux copiada)");
+
+        topDownSplitMerge(this, lista_aux, 0, qte_el);
+
+        lista_aux.exibir("(Lisa aux na teoria populada e ordenada)");
+
+    }
+
+    // bottom up
     public void ordenarPorFusaoDiretaMerge2() {
     }
 
@@ -138,16 +252,6 @@ public class Lista {
     }
 
     public void ordenarPorGnome() {
-        /**
-         * procedure gnomeSort(a[]):
-         * ----pos := 1
-         * ----while pos < length(a):
-         * --------if (pos == 0 or a[pos] >= a[pos-1]):
-         * ------------pos := pos + 1
-         * --------else:
-         * ------------swap a[pos] and a[pos-1]
-         * ------------pos := pos - 1
-         */
         int aux;
         No atual = inicio;
         while (atual != null) {
@@ -164,7 +268,7 @@ public class Lista {
     }
 
     public void ordenarPorCounting() {
-        // achar maior elemento
+        // achar maior elemento "k"
         int maior = inicio.getInfo();
         No atual = inicio, aux;
         while (atual != null) {
@@ -173,10 +277,12 @@ public class Lista {
             }
             atual = atual.getProx();
         }
+        // criar nova lista com tamanho k + 1 populada com zeros
         Lista novaLista = new Lista();
         for (int i = 0; i <= maior; i++) {
             novaLista.inserirNoFim(0);
         }
+        // colocar em cada posição a quantidade de valores referente a cada posição
         atual = inicio;
         while (atual != null) {
             aux = novaLista.getInicio();
@@ -186,12 +292,17 @@ public class Lista {
             aux.setInfo(aux.getInfo() + 1);
             atual = atual.getProx();
         }
+        // repopular lista original com valores ordenados
         aux = novaLista.getInicio();
         int numAtual = 0;
         atual = inicio;
         while (aux != null) {
             if (aux.getInfo() > 0) {
-                // ...
+                // num atual é o valor a ser colocado
+                for (int i = 0; i < aux.getInfo(); i++) {
+                    atual.setInfo(numAtual);
+                    atual = atual.getProx();
+                }
             }
             numAtual++;
             aux = aux.getProx();
