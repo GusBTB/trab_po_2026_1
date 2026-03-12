@@ -20,6 +20,17 @@ public class Principal {
     }
 
     public static void fernando() {
-        // ...
+        Lista lista = new Lista();
+        lista.popular(9);
+        lista.exibir("(Aleatório)");
+
+        //lista.ordenarPorBolha();
+        //lista.exibir("(Ordenado por Bolha)");
+
+        //lista.ordenarPorInsercaoDireta();
+        //lista.exibir("(Ordenado por Inserção Direta)");
+
+        lista.ordenarPorInsercaoBinaria();
+        lista.exibir("(Ordenado por Inserção Binária)");
     }
 }

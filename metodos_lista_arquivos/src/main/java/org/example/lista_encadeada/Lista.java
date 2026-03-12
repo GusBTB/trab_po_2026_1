@@ -200,21 +200,94 @@ public class Lista {
 
     // FERNANDO
     public void ordenarPorInsercaoDireta() {
+        No pi = inicio.getProx(), ppos;
+        int aux;
+        while(pi!=null)
+        {
+            aux = pi.getInfo();
+            ppos=pi;
+            while (ppos!=inicio && aux<ppos.getAnt().getInfo())
+            {
+                ppos.setInfo(ppos.getAnt().getInfo());
+                ppos=ppos.getAnt();
+            }
+            ppos.setInfo(aux);
+            pi=pi.getProx();
+        }
+    }
+
+    public int busca_binaria(int chave,int qtd){
+        int i, ini=0, fim =qtd-1, meio = fim/2;
+        No list= inicio;
+        while(ini<=fim)
+        {
+            for(i=0; i<meio; i++)
+                list=list.getProx();
+            if(chave < list.getInfo())
+                fim=meio-1;
+            else
+                ini=meio+1;
+            meio=(ini+fim)/2;
+            list=inicio;
+        }
+        if (chave> list.getInfo())
+            return meio+1;
+        return meio;
     }
 
     public void ordenarPorInsercaoBinaria() {
+        int aux,pos,ordenado=1;
+        No list = inicio.getProx();
+        while(list!=null) {
+            aux = list.getInfo();
+            pos = busca_binaria(aux, ordenado);
+            if(pos<ordenado) {
+                No l2 = list;
+                for (int i = ordenado; i > pos; i--) {
+                    l2.setInfo(l2.getAnt().getInfo());
+                    l2 = l2.getAnt();
+                }
+                l2.setInfo(aux);
+            }
+            list = list.getProx();
+            ordenado++;
+        }
     }
 
     public void ordenarPorBolha() {
+        int aux;
+        No pi, pfim=fim;
+        boolean flag = true;
+
+        while(pfim!=inicio && flag) {
+            pi = inicio;
+            flag = false;
+            while (pi!=pfim)
+            {
+                if(pi.getInfo()>pi.getProx().getInfo())
+                {
+                    aux=pi.getInfo();
+                    pi.setInfo(pi.getProx().getInfo());
+                    pi.getProx().setInfo(aux);
+                    flag=true;
+                }
+                pi=pi.getProx();
+            }
+            pfim=pfim.getAnt();
+        }
     }
 
+
     public void ordenarPorShake() {
+
     }
 
     public void ordenarPorShell() {
+
     }
 
     public void ordenarPorBucket() {
+
     }
 
     public void ordenarPorRadix() {
