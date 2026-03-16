@@ -79,6 +79,48 @@ public class Principal {
             writer.write(linhaAtual.toString());
             quebraLinha(writer);
 
+            // Bolha
+            if (mostrarLog)
+                System.out.println("\n\n2: Bolha");
+            linhaAtual = new StringBuilder("| Bolha                 | ");
+            arq_ord.initComp();
+            arq_ord.initMov();
+            tempoInicial = System.currentTimeMillis();
+            arq_ord.bolha();
+            tempoFinal = System.currentTimeMillis();
+            concatenarOrdenado(linhaAtual, (tempoFinal - tempoInicial) / 1000, arq_ord, arq_ord.getComp(), 0);
+            if (mostrarLog)
+                arq_ord.exibir("(Arquivo ordenado)");
+
+            aux_rev.initComp();
+            aux_rev.initMov();
+            aux_rev.copiaArquivo(arq_rev.getArquivo());
+            if (mostrarLog)
+                aux_rev.exibir("(Arquivo reverso não ordenado)");
+            tempoInicial = System.currentTimeMillis();
+            aux_rev.bolha();
+            tempoFinal = System.currentTimeMillis();
+            concatenarReverso(linhaAtual, (tempoFinal - tempoInicial) / 1000, aux_rev, aux_rev.getComp(),
+                    (int) (3 * (Math.pow(arq_rev.filesize(), 2) - arq_rev.filesize()) / 4));
+            if (mostrarLog)
+                aux_rev.exibir("(Arquivo reverso ordenado)");
+
+            aux_rand.initComp();
+            aux_rand.initMov();
+            aux_rand.copiaArquivo(arq_rand.getArquivo());
+            if (mostrarLog)
+                aux_rand.exibir("(Arquivo random não ordenado)");
+            tempoInicial = System.currentTimeMillis();
+            aux_rand.bolha();
+            tempoFinal = System.currentTimeMillis();
+            concatenarRandomico(linhaAtual, (tempoFinal - tempoInicial) / 1000, aux_rand, aux_rand.getComp(),
+                    (int) (3 * (Math.pow(arq_rev.filesize(), 2) - arq_rev.filesize()) / 4));
+            if (mostrarLog)
+                aux_rand.exibir("(Arquivo random ordenado)");
+
+            writer.write(linhaAtual.toString());
+            quebraLinha(writer);
+
         } catch (IOException e) {
         }
     }
