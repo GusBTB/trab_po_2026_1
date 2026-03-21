@@ -2,7 +2,7 @@ package org.example.lista_encadeada;
 
 public class Principal {
     public static void main(String[] args) {
-        gustavo();
+        fernando();
     }
 
     public static void gustavo() {
@@ -37,7 +37,13 @@ public class Principal {
         //lista.ordenarPorInsercaoDireta();
         //lista.exibir("(Ordenado por Inserção Direta)");
 
-        lista.ordenarPorInsercaoBinaria();
-        lista.exibir("(Ordenado por Inserção Binária)");
+        //lista.ordenarPorInsercaoBinaria();
+        //lista.exibir("(Ordenado por Inserção Binária)");
+
+        //lista.ordenarPorShake();
+        //lista.exibir("(Ordenado por Shake)");
+
+        lista.ordenarPorShell();
+        lista.exibir("(Ordenado por Shell)");
     }
 }

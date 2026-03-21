@@ -390,10 +390,88 @@ public class Lista {
 
 
     public void ordenarPorShake() {
-
+         int aux;
+         boolean flag =true;
+         No po,pinicio=inicio,pfim=fim;
+         while (pinicio!=pfim && flag)
+         {
+             flag = false;
+             po=pinicio;
+             while(po!=pfim)
+             {
+                 if (po.getInfo()>po.getProx().getInfo())
+                 {
+                     aux=po.getInfo();
+                     po.setInfo(po.getProx().getInfo());
+                     po.getProx().setInfo(aux);
+                     flag=true;
+                 }
+                 po=po.getProx();
+             }
+             pfim=pfim.getAnt();
+             if (flag)
+             {
+                 flag=false;
+                 po=pfim;
+                 while(po!=pinicio)
+                 {
+                     if(po.getInfo()<po.getAnt().getInfo())
+                     {
+                         aux=po.getInfo();
+                         po.setInfo(po.getAnt().getInfo());
+                         po.getAnt().setInfo(aux);
+                         flag=true;
+                     }
+                     po=po.getAnt();
+                 }
+                 pinicio=pinicio.getProx();
+             }
+         }
     }
 
     public void ordenarPorShell() {
+        int dist=1, aux, pos,i,aux2,aux3;
+        No pi;
+        while (dist<qte_el)
+            dist=3*dist+1;
+        dist = dist/3;
+        while (dist>0)
+        {
+            i=dist;
+            while(i<qte_el)
+            {
+                pi=inicio;
+                for(int j=0;j<i;j++)
+                    pi=pi.getProx();
+                aux=pi.getInfo();
+                pos=i;
+                aux2 = pos - dist;
+                pi=inicio;
+                for(int j=0;j<aux2;j++)
+                    pi=pi.getProx();
+
+                while(pos>=dist && aux<pi.getInfo())
+                {
+                    aux3=pi.getInfo();
+                    pi=inicio;
+                    for(int j=0;j<pos;j++)
+                        pi=pi.getProx();
+                    pi.setInfo(aux3);
+                    pos=pos-dist;
+                    aux2 = pos - dist;
+                    pi=inicio;
+                    for(int j=0;j<aux2;j++)
+                        pi=pi.getProx();
+
+                }
+                pi=inicio;
+                for(int j=0;j<pos;j++)
+                    pi=pi.getProx();
+                pi.setInfo(aux);
+                i++;
+            }
+            dist=dist/3;
+        }
 
     }
 
