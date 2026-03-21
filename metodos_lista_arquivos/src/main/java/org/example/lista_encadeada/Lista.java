@@ -125,7 +125,6 @@ public class Lista {
             // trocar primeiro com ultimo no
             aux1 = ultimo_no.getInfo();
             ultimo_no.setInfo(inicio.getInfo());
-            ;
             inicio.setInfo(aux1);
             // decrementar TL2 => mover ponteiro
             ultimo_no = ultimo_no.getAnt();
@@ -181,10 +180,16 @@ public class Lista {
     public void topDownMerge(Lista listaA, Lista listaB, int ini, int meio, int fim) {
         int i = ini, j = meio, k;
         No auxi, auxj, auxk;
+        int[] posI = { 0 }, posJ = { 0 }, posK = { 0 };
+        No[] noI = { listaA.getInicio() };
+        No[] noJ = { listaA.getInicio() };
+        No[] noK = { listaB.getInicio() };
+
         for (k = ini; k < fim; k++) {
-            auxi = recuperarNaPos(i, listaA);
-            auxj = recuperarNaPos(j, listaA);
-            auxk = recuperarNaPos(k, listaB);
+            auxi = recuperarNaPos(i, listaA, posI, noI);
+            auxj = recuperarNaPos(j, listaA, posJ, noJ);
+            auxk = recuperarNaPos(k, listaB, posK, noK);
+
             if (i < meio && (j >= fim || auxi.getInfo() <= auxj.getInfo())) {
                 auxk.setInfo(auxi.getInfo());
                 i++;
@@ -193,7 +198,6 @@ public class Lista {
                 j++;
             }
         }
-
     }
 
     public void topDownSplitMerge(Lista listaA, Lista listaB, int ini, int fim) {
@@ -224,7 +228,60 @@ public class Lista {
     }
 
     // bottom up
+    public void bottomUpMerge(Lista listaA, Lista listaB, int left, int right, int end) {
+        int i = left, j = right, k;
+        No auxi, auxj, auxk;
+        int[] posI = { 0 }, posJ = { 0 }, posK = { 0 };
+        No[] noI = { listaA.getInicio() };
+        No[] noJ = { listaA.getInicio() };
+        No[] noK = { listaB.getInicio() };
+
+        for (k = left; k < end; k++) {
+            auxi = recuperarNaPos(i, listaA, posI, noI);
+            auxj = recuperarNaPos(j, listaA, posJ, noJ);
+            auxk = recuperarNaPos(k, listaB, posK, noK);
+
+            if (i < right && (j >= end || auxi.getInfo() <= auxj.getInfo())) {
+                auxk.setInfo(auxi.getInfo());
+                i++;
+            } else {
+                auxk.setInfo(auxj.getInfo());
+                j++;
+            }
+        }
+    }
+
+    // bottom up
     public void ordenarPorFusaoDiretaMerge2() {
+        if (inicio != null && inicio.getProx() != null) {
+            int n = qte_el;
+            Lista lista_aux = new Lista();
+
+            No atual = inicio;
+            while (atual != null) {
+                lista_aux.inserirNoFim(atual.getInfo());
+                atual = atual.getProx();
+            }
+
+            for (int width = 1; width < n; width *= 2) {
+                for (int i = 0; i < n; i = i + 2 * width) {
+                    int left = i;
+                    int right = Math.min(i + width, n);
+                    int end = Math.min(i + 2 * width, n);
+                    bottomUpMerge(this, lista_aux, left, right, end);
+                }
+
+                int[] posAux = { 0 }, posEssaLista = { 0 };
+                No[] noListaAux = { lista_aux.getInicio() };
+                No[] nosDessaLista = { this.getInicio() };
+
+                for (int k = 0; k < n; k++) {
+                    No nAux = recuperarNaPos(k, lista_aux, posAux, noListaAux);
+                    No noDessaLista = recuperarNaPos(k, this, posEssaLista, nosDessaLista);
+                    noDessaLista.setInfo(nAux.getInfo());
+                }
+            }
+        }
     }
 
     public void ordenarPorSelecaoDireta() {
@@ -313,46 +370,43 @@ public class Lista {
     public void ordenarPorInsercaoDireta() {
         No pi = inicio.getProx(), ppos;
         int aux;
-        while(pi!=null)
-        {
+        while (pi != null) {
             aux = pi.getInfo();
-            ppos=pi;
-            while (ppos!=inicio && aux<ppos.getAnt().getInfo())
-            {
+            ppos = pi;
+            while (ppos != inicio && aux < ppos.getAnt().getInfo()) {
                 ppos.setInfo(ppos.getAnt().getInfo());
-                ppos=ppos.getAnt();
+                ppos = ppos.getAnt();
             }
             ppos.setInfo(aux);
-            pi=pi.getProx();
+            pi = pi.getProx();
         }
     }
 
-    public int busca_binaria(int chave,int qtd){
-        int i, ini=0, fim =qtd-1, meio = fim/2;
-        No list= inicio;
-        while(ini<=fim)
-        {
-            for(i=0; i<meio; i++)
-                list=list.getProx();
-            if(chave < list.getInfo())
-                fim=meio-1;
+    public int busca_binaria(int chave, int qtd) {
+        int i, ini = 0, fim = qtd - 1, meio = fim / 2;
+        No list = inicio;
+        while (ini <= fim) {
+            for (i = 0; i < meio; i++)
+                list = list.getProx();
+            if (chave < list.getInfo())
+                fim = meio - 1;
             else
-                ini=meio+1;
-            meio=(ini+fim)/2;
-            list=inicio;
+                ini = meio + 1;
+            meio = (ini + fim) / 2;
+            list = inicio;
         }
-        if (chave> list.getInfo())
-            return meio+1;
+        if (chave > list.getInfo())
+            return meio + 1;
         return meio;
     }
 
     public void ordenarPorInsercaoBinaria() {
-        int aux,pos,ordenado=1;
+        int aux, pos, ordenado = 1;
         No list = inicio.getProx();
-        while(list!=null) {
+        while (list != null) {
             aux = list.getInfo();
             pos = busca_binaria(aux, ordenado);
-            if(pos<ordenado) {
+            if (pos < ordenado) {
                 No l2 = list;
                 for (int i = ordenado; i > pos; i--) {
                     l2.setInfo(l2.getAnt().getInfo());
@@ -367,27 +421,24 @@ public class Lista {
 
     public void ordenarPorBolha() {
         int aux;
-        No pi, pfim=fim;
+        No pi, pfim = fim;
         boolean flag = true;
 
-        while(pfim!=inicio && flag) {
+        while (pfim != inicio && flag) {
             pi = inicio;
             flag = false;
-            while (pi!=pfim)
-            {
-                if(pi.getInfo()>pi.getProx().getInfo())
-                {
-                    aux=pi.getInfo();
+            while (pi != pfim) {
+                if (pi.getInfo() > pi.getProx().getInfo()) {
+                    aux = pi.getInfo();
                     pi.setInfo(pi.getProx().getInfo());
                     pi.getProx().setInfo(aux);
-                    flag=true;
+                    flag = true;
                 }
-                pi=pi.getProx();
+                pi = pi.getProx();
             }
-            pfim=pfim.getAnt();
+            pfim = pfim.getAnt();
         }
     }
-
 
     public void ordenarPorShake() {
          int aux;

@@ -22,8 +22,11 @@ public class Principal {
         // lista.ordenarPorFusaoDiretaMerge1();
         // lista.exibir("(Ordenado por Fusao direta Merge 1)");
 
-        lista.ordenarPorHeap();
-        lista.exibir("(Ordenado por Heap)");
+        lista.ordenarPorFusaoDiretaMerge2();
+        lista.exibir("(Ordenado por Fusao direta Merge 2)");
+
+        // lista.ordenarPorHeap();
+        // lista.exibir("(Ordenado por Heap)");
     }
 
     public static void fernando() {
@@ -31,11 +34,11 @@ public class Principal {
         lista.popular(9);
         lista.exibir("(Aleatório)");
 
-        //lista.ordenarPorBolha();
-        //lista.exibir("(Ordenado por Bolha)");
+        // lista.ordenarPorBolha();
+        // lista.exibir("(Ordenado por Bolha)");
 
-        //lista.ordenarPorInsercaoDireta();
-        //lista.exibir("(Ordenado por Inserção Direta)");
+        // lista.ordenarPorInsercaoDireta();
+        // lista.exibir("(Ordenado por Inserção Direta)");
 
         //lista.ordenarPorInsercaoBinaria();
         //lista.exibir("(Ordenado por Inserção Binária)");

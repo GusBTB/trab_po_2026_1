@@ -212,6 +212,31 @@ public class Arquivo {
     }
 
     public void bolha() {
+        int tl = filesize();
+        Registro regI = new Registro();
+        Registro regI1 = new Registro();
+        boolean flag = true;
+        while (tl > 1 && flag) {
+            flag = false;
+            for (int i = 0; i < tl - 1; i++) {
+                // se vet[i] > vet[i + 1] troca e bota flag true
+                // posicionar em i e ler
+                // let i + 1, não precisa reposicionar pq ponteiro
+                // ja vai ter andado
+                seekArq(i);
+                regI.leDoArq(arquivo);
+                regI1.leDoArq(arquivo);
+                comp++;
+                if (regI.getNumero() > regI1.getNumero()) {
+                    seekArq(i);
+                    regI1.gravaNoArq(arquivo);
+                    regI.gravaNoArq(arquivo);
+                    flag = true;
+                    mov += 2;
+                }
+            }
+            tl--;
+        }
     }
 
     public void shake() {
