@@ -79,6 +79,103 @@ public class Arquivo {
         return mov;
     }
 
+    //FERNANDO
+    public void heap(){
+        Registro aux = new Registro();
+        Registro valor = new Registro();
+        int TL=filesize(),TL2=TL/2, pai, f1, f2, maiorf, valorf1,valorf2,valormf,valorpai;
+
+        while(TL2>1)
+        {
+            pai=TL2/2-1;
+            while(pai>0)
+            {
+                f1=2*pai+1;
+                f2=f1+1;
+                maiorf=f1;
+                seekArq(f1);
+                valor.leDoArq(arquivo);
+                valorf1=valor.getNumero();
+                seekArq(f2);
+                valor.leDoArq(arquivo);
+                valorf2=valor.getNumero();
+                if(f2<TL && valorf2>valorf1)
+                    maiorf=valorf2;
+                seekArq(maiorf);
+                valor.leDoArq(arquivo);
+                valormf=valor.getNumero();
+                seekArq(pai);
+                valor.leDoArq(arquivo);
+                valorpai=valor.getNumero();
+                if(valormf>valorpai)
+                {
+                    seekArq(maiorf);
+                    aux.leDoArq(arquivo);
+                    seekArq(pai);
+                    aux.gravaNoArq(arquivo);
+                    seekArq(maiorf);
+                    valor.gravaNoArq(arquivo);
+                }
+                pai--;
+            }
+            TL2--;
+            seekArq(0);
+            aux.leDoArq(arquivo);
+            seekArq(TL2);
+            valor.leDoArq(arquivo);
+            seekArq(0);
+            valor.gravaNoArq(arquivo);
+            seekArq(TL2);
+            aux.gravaNoArq(arquivo);
+        }
+    }
+
+    public void quickComPivo(){ }
+
+    public void quickSemPivo(){ }
+
+    public void topDownMerge(){ }
+
+    public void topDownSplitMerge(){ }
+
+    public void fusaoDiretaMerge1(){ }
+
+    public void fusaoDiretaMerge2(){ }
+
+    public void selecaoDireta(){
+        Registro regMenor = new Registro();
+        Registro regi = new Registro();
+        Registro regj = new Registro();
+
+        int menor, posMenor, TL=filesize();
+
+        for (int i=0;i<TL-1;i++)
+        {
+            seekArq(i);
+            regi.leDoArq(arquivo);
+            menor=regi.getNumero();
+            posMenor=i;
+            for (int j=i+1;j<TL;j++)
+            {
+                regj.leDoArq(arquivo);
+                if (regj.getNumero()<menor)
+                {
+                    menor=regj.getNumero();
+                    posMenor=j;
+                }
+            }
+            seekArq(posMenor);
+            regMenor.leDoArq(arquivo);
+            seekArq(i);
+            regMenor.gravaNoArq(arquivo);
+            seekArq(posMenor);
+            regi.gravaNoArq(arquivo);
+        }
+    }
+
+    public void gnome(){ }
+
+    public void couting(){ }
     // GUSTAVO
 
     public void insercaoDireta() {

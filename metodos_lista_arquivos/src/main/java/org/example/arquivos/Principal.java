@@ -36,12 +36,12 @@ public class Principal {
 
             // Inserção Direta
             if (mostrarLog)
-                System.out.println("1: Inserção direta");
-            StringBuilder linhaAtual = new StringBuilder("| Inserção Direta       | ");
+                System.out.println("1: selecao direta");
+            StringBuilder linhaAtual = new StringBuilder("| selecao Direta       | ");
             arq_ord.initComp();
             arq_ord.initMov();
             long tempoInicial = System.currentTimeMillis();
-            arq_ord.insercaoDireta();
+            arq_ord.selecaoDireta();
             long tempoFinal = System.currentTimeMillis();
             concatenarOrdenado(linhaAtual, (tempoFinal - tempoInicial) / 1000, arq_ord, arq_ord.filesize() - 1,
                     3 * (arq_ord.filesize() - 1));
@@ -54,7 +54,7 @@ public class Principal {
             if (mostrarLog)
                 aux_rev.exibir("(Arquivo reverso não ordenado)");
             tempoInicial = System.currentTimeMillis();
-            aux_rev.insercaoDireta();
+            aux_rev.selecaoDireta();
             tempoFinal = System.currentTimeMillis();
             concatenarReverso(linhaAtual, (tempoFinal - tempoInicial) / 1000, aux_rev,
                     (int) (Math.pow(arq_ord.filesize(), 2) + arq_ord.filesize() - 2) / 4,
@@ -68,7 +68,7 @@ public class Principal {
             if (mostrarLog)
                 aux_rand.exibir("(Arquivo random não ordenado)");
             tempoInicial = System.currentTimeMillis();
-            aux_rand.insercaoDireta();
+            aux_rand.selecaoDireta();
             tempoFinal = System.currentTimeMillis();
             concatenarRandomico(linhaAtual, (tempoFinal - tempoInicial) / 1000, aux_rand,
                     (int) (Math.pow(arq_ord.filesize(), 2) + arq_ord.filesize() - 4) / 4,
