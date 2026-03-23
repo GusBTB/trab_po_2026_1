@@ -31,7 +31,7 @@ public class Principal {
 
     public static void fernando() {
         Lista lista = new Lista();
-        lista.popular(9);
+        lista.popular(10);
         lista.exibir("(Aleatório)");
 
         // lista.ordenarPorBolha();
@@ -46,7 +46,19 @@ public class Principal {
         //lista.ordenarPorShake();
         //lista.exibir("(Ordenado por Shake)");
 
-        lista.ordenarPorShell();
-        lista.exibir("(Ordenado por Shell)");
+        //lista.ordenarPorShell();
+       // lista.exibir("(Ordenado por Shell)");
+
+        //lista.ordenarPorBucket();
+        //lista.exibir("(Ordenado por Bucket)");
+
+        //lista.ordenarPorRadix();
+        //lista.exibir("(Ordenado por Radix)");
+
+        //lista.ordenarPorComb();
+        //lista.exibir("Ordenado por Comb");
+
+        lista.ordenarPorTim();
+        lista.exibir("Ordenado por Tim");
     }
 }
