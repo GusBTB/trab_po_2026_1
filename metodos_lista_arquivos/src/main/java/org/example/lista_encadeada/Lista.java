@@ -21,6 +21,14 @@ public class Lista {
         return fim;
     }
 
+    public void setInicio(No inicio) {
+        this.inicio = inicio;
+    }
+
+    public void setFim(No fim) {
+        this.fim = fim;
+    }
+
     public void inserirNoFim(int valor) {
         No novoNo = new No(valor);
 
@@ -132,10 +140,65 @@ public class Lista {
         }
     }
 
+    private void quickCP(No ini, No fim) {
+        if (ini != null && fim != null && ini != fim) {
+            No i = ini, j = fim;
+            int pivo = ini.getInfo();
+            while (i != j) {
+                while (i != j && i.getInfo() < pivo) {
+                    i = i.getProx();
+                }
+                while (i != j && j.getInfo() > pivo) {
+                    j = j.getAnt();
+                }
+                if (i != j) {
+                    int aux = i.getInfo();
+                    i.setInfo(j.getInfo());
+                    j.setInfo(aux);
+                    if (i.getInfo() == pivo && j.getInfo() == pivo) {
+                        i = i.getProx();
+                    }
+                }
+            }
+
+            if (ini != i && ini != i.getAnt()) {
+                quickCP(ini, i.getAnt());
+            }
+            if (fim != i && fim != i.getProx()) {
+                quickCP(i.getProx(), fim);
+            }
+        }
+    }
+
     public void ordenarPorQuickComPivo() {
+        quickCP(inicio, fim);
+    }
+
+    private void quickSP(No ini, No fim) {
+        No i = ini, j = fim;
+        int aux;
+        boolean flag = true;
+        while (i != j) {
+            if (flag) {
+                while (i != j && i.getInfo() <= j.getInfo())
+                    i = i.getProx();
+            } else {
+                while (i != j && j.getInfo() >= i.getInfo())
+                    j = j.getAnt();
+            }
+            aux = i.getInfo();
+            i.setInfo(j.getInfo());
+            j.setInfo(aux);
+            flag = !flag;
+        }
+        if (ini != i && ini != i.getAnt())
+            quickSP(ini, i.getAnt());
+        if (fim != j && fim != j.getProx())
+            quickSP(j.getProx(), fim);
     }
 
     public void ordenarPorQuickSemPivo() {
+        quickSP(inicio, fim);
     }
 
     public No recuperarNaPos(int pos) {
@@ -177,54 +240,66 @@ public class Lista {
         return onde_estou_no[0];
     }
 
-    public void topDownMerge(Lista listaA, Lista listaB, int ini, int meio, int fim) {
-        int i = ini, j = meio, k;
-        No auxi, auxj, auxk;
-        int[] posI = { 0 }, posJ = { 0 }, posK = { 0 };
-        No[] noI = { listaA.getInicio() };
-        No[] noJ = { listaA.getInicio() };
-        No[] noK = { listaB.getInicio() };
+    private void particao(Lista l1, Lista l2, int seq) {
+        No aux = inicio;
+        boolean jogaNaL1 = true;
 
-        for (k = ini; k < fim; k++) {
-            auxi = recuperarNaPos(i, listaA, posI, noI);
-            auxj = recuperarNaPos(j, listaA, posJ, noJ);
-            auxk = recuperarNaPos(k, listaB, posK, noK);
+        while (aux != null) {
+            for (int i = 0; i < seq && aux != null; i++) {
+                if (jogaNaL1) {
+                    l1.inserirNoFim(aux.getInfo());
+                } else {
+                    l2.inserirNoFim(aux.getInfo());
+                }
+                aux = aux.getProx();
+            }
+            jogaNaL1 = !jogaNaL1;
+        }
+    }
 
-            if (i < meio && (j >= fim || auxi.getInfo() <= auxj.getInfo())) {
-                auxk.setInfo(auxi.getInfo());
+    private void fusao(Lista l1, Lista l2, int seq) {
+        No noI = l1.getInicio();
+        No noJ = l2.getInicio();
+        No noK = inicio;
+        while (noK != null) {
+            int i = 0;
+            int j = 0;
+            while (i < seq && j < seq && noI != null && noJ != null) {
+                if (noI.getInfo() < noJ.getInfo()) {
+                    noK.setInfo(noI.getInfo());
+                    noI = noI.getProx();
+                    i++;
+                } else {
+                    noK.setInfo(noJ.getInfo());
+                    noJ = noJ.getProx();
+                    j++;
+                }
+                noK = noK.getProx();
+            }
+            while (i < seq && noI != null) {
+                noK.setInfo(noI.getInfo());
+                noI = noI.getProx();
                 i++;
-            } else {
-                auxk.setInfo(auxj.getInfo());
+                noK = noK.getProx();
+            }
+            while (j < seq && noJ != null) {
+                noK.setInfo(noJ.getInfo());
+                noJ = noJ.getProx();
                 j++;
+                noK = noK.getProx();
             }
         }
     }
 
-    public void topDownSplitMerge(Lista listaA, Lista listaB, int ini, int fim) {
-        if (fim - ini > 1) {
-            int meio = (ini + fim) / 2;
-            System.out.println("Chegou no TDSM com inicio " + ini + " fim " + fim + " e meio " + meio);
-            topDownSplitMerge(listaB, listaA, ini, meio);
-            topDownSplitMerge(listaB, listaA, meio, fim);
-            topDownMerge(listaB, listaA, ini, meio, fim);
+    public void ordenarPorFusaoDiretaMerge1(int test) {
+        int seq = 1;
+        while (seq < qte_el) {
+            Lista lista_aux = new Lista();
+            Lista lista_aux1 = new Lista();
+            particao(lista_aux, lista_aux1, seq);
+            fusao(lista_aux, lista_aux1, seq);
+            seq *= 2;
         }
-    }
-
-    // top down
-    public void ordenarPorFusaoDiretaMerge1() {
-        No aux = inicio;
-        Lista lista_aux = new Lista();
-        // copia
-        while (aux != null) {
-            lista_aux.inserirNoFim(aux.getInfo());
-            aux = aux.getProx();
-        }
-        lista_aux.exibir("(Lisa aux copiada)");
-
-        topDownSplitMerge(this, lista_aux, 0, qte_el);
-
-        lista_aux.exibir("(Lisa aux na teoria populada e ordenada)");
-
     }
 
     // bottom up

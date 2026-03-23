@@ -19,14 +19,20 @@ public class Principal {
         // lista.ordenarPorCounting();
         // lista.exibir("(Ordenado por counting)");
 
-        // lista.ordenarPorFusaoDiretaMerge1();
+        // lista.ordenarPorFusaoDiretaMerge1(1);
         // lista.exibir("(Ordenado por Fusao direta Merge 1)");
 
-        lista.ordenarPorFusaoDiretaMerge2();
-        lista.exibir("(Ordenado por Fusao direta Merge 2)");
+        // lista.ordenarPorFusaoDiretaMerge2();
+        // lista.exibir("(Ordenado por Fusao direta Merge 2)");
 
         // lista.ordenarPorHeap();
         // lista.exibir("(Ordenado por Heap)");
+
+        // lista.ordenarPorQuickSemPivo();
+        // lista.exibir("(Ordenado por quick sem pivo)");
+
+        // lista.ordenarPorQuickComPivo();
+        // lista.exibir("(Ordenado por quick com pivo)");
     }
 
     public static void fernando() {
